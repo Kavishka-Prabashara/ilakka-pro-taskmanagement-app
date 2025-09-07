@@ -1,16 +1,18 @@
+// app/_layout.tsx
 import { Stack } from "expo-router";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
-function RootStack() {
+// Separate component that lives INSIDE AuthProvider
+function RootNavigator() {
   const { token } = useAuth();
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
       {token ? (
-        // ✅ If logged in -> go to tabs
+        // ✅ Logged in → show tabs
         <Stack.Screen name="(tabs)" />
       ) : (
-        // ❌ If not logged in -> show auth flow
+        // ❌ Not logged in → show auth
         <Stack.Screen name="(auth)" />
       )}
     </Stack>
@@ -20,7 +22,7 @@ function RootStack() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <RootStack />
+      <RootNavigator />
     </AuthProvider>
   );
 }

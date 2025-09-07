@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../lib/api";
-import { AuthContext } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   StyleSheet,
@@ -17,7 +17,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 const backgroundImage = require("../assets/images/background-image.png");
 
 export default function TaskScreen() {
-  const { token } = useContext(AuthContext);
+  const { token } = useAuth();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
