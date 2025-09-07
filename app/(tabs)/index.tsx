@@ -76,12 +76,19 @@ export default function TaskScreen() {
         </View>
 
         {/* Selected Date & Time Labels */}
-<View style={styles.dateTimeLabels}>
-  <Text style={styles.labelText}>
-    📅 <Text style={styles.bold}>Date:</Text> {date.toLocaleDateString()} 
-    ⏰ <Text style={styles.bold}>Time:</Text> {date.toLocaleTimeString()}
+<View style={styles.dateTimeInline}>
+  <Icon name="calendar-today" size={18} color="#007AFF" style={styles.inlineIcon} />
+  <Text style={styles.inlineText}>
+    <Text style={styles.bold}>Date:</Text> {date.toLocaleDateString()}
+  </Text>
+
+  <Icon name="access-time" size={18} color="#007AFF" style={styles.inlineIcon} />
+  <Text style={styles.inlineText}>
+    <Text style={styles.bold}>Time:</Text> {date.toLocaleTimeString()}
   </Text>
 </View>
+
+
 
 
         {/* Date Picker */}
@@ -170,22 +177,28 @@ const styles = StyleSheet.create({
     color: "#007AFF",
     marginTop: 4,
   },
-dateTimeLabels: {
-  marginVertical: 10,
-  paddingHorizontal: 10,
+dateTimeInline: {
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "center",
+  flexWrap: "wrap",
+  marginVertical: 10,
+  paddingHorizontal: 10,
 },
-labelText: {
+inlineIcon: {
+  marginHorizontal: 6,
+},
+inlineText: {
   fontSize: 15,
   color: "#333",
-  fontWeight: "500",
+  marginRight: 12,
 },
 bold: {
   fontWeight: "bold",
   color: "#000",
 },
+
+
   addButton: {
     backgroundColor: "#007AFF",
     paddingVertical: 12,
