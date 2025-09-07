@@ -1,28 +1,42 @@
-import { View, TouchableOpacity, Text } from "react-native";
-import { Tabs } from "expo-router";
-import { useRouter, useSegments } from "expo-router";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
-export default function NavBar({ state }: any) {
-  const router = useRouter();
-  const segments = useSegments();
+export default function Profile() {
+  const userName = "Kavishka";
+  const userEmail = "kavishka@example.com";
 
   return (
-    <View className="flex-row justify-around bg-gray-100 py-3 rounded-t-2xl shadow-lg">
-      {state.routes.map((route: any, index: number) => {
-        const isFocused = state.index === index;
+    <View style={styles.container}>
+      {/* User Icon */}
+      <Icon name="account-circle" size={80} color="#007AFF" style={styles.icon} />
 
-        return (
-          <TouchableOpacity
-            key={route.key}
-            onPress={() => router.push(route.name === "Home" ? "/(tabs)/Home" : route.name)}
-            className="items-center"
-          >
-            <Text className={isFocused ? "text-green-600 font-bold" : "text-gray-600"}>
-              {route.name}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
+      {/* User Info */}
+      <Text style={styles.name}>{userName}</Text>
+      <Text style={styles.email}>{userEmail}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: "#F5F5F5",
+  },
+  icon: {
+    marginBottom: 20,
+  },
+  name: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
+  },
+  email: {
+    fontSize: 16,
+    color: "#666",
+  },
+});
