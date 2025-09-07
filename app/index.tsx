@@ -4,9 +4,9 @@ import { Text, View, StyleSheet } from 'react-native';
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>If you haven't account?</Text>
+      <Text style={styles.text}>Home screen</Text>
       <Link href="/about" style={styles.button}>
-        Sign Up
+        Go to sss screen
       </Link>
     </View>
   );
