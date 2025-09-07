@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import Icon from "react-native-vector-icons/MaterialIcons";
 import {
   StyleSheet,
   View,
   TextInput,
-  Button,
   FlatList,
   Text,
   TouchableOpacity,
@@ -62,8 +62,20 @@ export default function TaskScreen() {
           multiline
         />
 
+        {/* Icon Buttons for Date & Time */}
+        <View style={styles.iconRow}>
+          <TouchableOpacity onPress={() => setShowDate(true)} style={styles.iconButton}>
+            <Icon name="calendar-today" size={28} color="#007AFF" />
+            <Text style={styles.iconLabel}>Pick Date</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setShowTime(true)} style={styles.iconButton}>
+            <Icon name="access-time" size={28} color="#007AFF" />
+            <Text style={styles.iconLabel}>Pick Time</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Date Picker */}
-        <Button title="Pick Date" onPress={() => setShowDate(true)} />
         {showDate && (
           <DateTimePicker
             value={date}
@@ -77,7 +89,6 @@ export default function TaskScreen() {
         )}
 
         {/* Time Picker */}
-        <Button title="Pick Time" onPress={() => setShowTime(true)} />
         {showTime && (
           <DateTimePicker
             value={date}
@@ -91,7 +102,9 @@ export default function TaskScreen() {
         )}
 
         {/* Add Task */}
-        <Button title="Add Task" onPress={handleAddTask} />
+        <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+          <Text style={styles.addButtonText}>Add Task</Text>
+        </TouchableOpacity>
 
         {/* Task List */}
         <FlatList
@@ -134,6 +147,31 @@ const styles = StyleSheet.create({
   textArea: {
     height: 80,
     textAlignVertical: "top",
+  },
+  iconRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginVertical: 10,
+  },
+  iconButton: {
+    alignItems: "center",
+  },
+  iconLabel: {
+    fontSize: 12,
+    color: "#007AFF",
+    marginTop: 4,
+  },
+  addButton: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 10,
+    alignItems: "center",
+  },
+  addButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   list: {
     marginTop: 20,
