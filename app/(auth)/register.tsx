@@ -1,55 +1,57 @@
-import { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { router } from 'expo-router';
+// src/screens/RegisterScreen.tsx
+import React, { useState, useContext } from "react";
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { AuthContext } from "../context/AuthContext";
+import { StackScreenProps } from "@react-navigation/stack";
 
-export default function SignupScreen() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+type Props = StackScreenProps<any>;
 
-  const handleSignup = async () => {
+export default function RegisterScreen({ navigation }: Props) {
+  const { register } = useContext(AuthContext);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const onRegister = async () => {
+    if (!username || !email || !password) return Alert.alert("Fill all fields");
+    setSubmitting(true);
     try {
-      const res = await fetch('http://localhost:3000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        router.replace('/');
-      } else {
-        Alert.alert('Signup Failed', data.error || 'Try again');
-      }
-    } catch (err) {
-      Alert.alert('Error', 'Something went wrong');
+      await register(username, email, password);
+      navigation.replace("Task");
+    } catch (err: any) {
+      console.error(err);
+      Alert.alert("Register failed", err?.response?.data?.error || err.message || "Unknown error");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <View className="flex-1 justify-center px-6 bg-white">
-      <Text className="text-2xl font-bold mb-4 text-center">Sign Up</Text>
-      <TextInput
-        className="border p-3 mb-3 rounded"
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        className="border p-3 mb-3 rounded"
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        className="border p-3 mb-3 rounded"
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity className="bg-green-600 p-3 rounded" onPress={handleSignup}>
-        <Text className="text-white text-center font-semibold">Sign Up</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Register</Text>
+
+      <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={setUsername} />
+      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
+      <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+
+      <TouchableOpacity style={styles.button} onPress={onRegister} disabled={submitting}>
+        <Text style={styles.buttonText}>{submitting ? "Registering..." : "Register"}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.link} onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.linkText}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, justifyContent: "center", padding: 20 },
+  title: { fontSize: 28, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
+  input: { backgroundColor: "#fff", padding: 12, borderRadius: 8, marginBottom: 12 },
+  button: { backgroundColor: "#007AFF", padding: 12, borderRadius: 8, alignItems: "center" },
+  buttonText: { color: "#fff", fontWeight: "bold" },
+  link: { marginTop: 12, alignItems: "center" },
+  linkText: { color: "#007AFF" },
+});
