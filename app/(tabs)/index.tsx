@@ -75,6 +75,15 @@ export default function TaskScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Selected Date & Time Labels */}
+<View style={styles.dateTimeLabels}>
+  <Text style={styles.labelText}>
+    📅 <Text style={styles.bold}>Date:</Text> {date.toLocaleDateString()} 
+    ⏰ <Text style={styles.bold}>Time:</Text> {date.toLocaleTimeString()}
+  </Text>
+</View>
+
+
         {/* Date Picker */}
         {showDate && (
           <DateTimePicker
@@ -161,6 +170,22 @@ const styles = StyleSheet.create({
     color: "#007AFF",
     marginTop: 4,
   },
+dateTimeLabels: {
+  marginVertical: 10,
+  paddingHorizontal: 10,
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+},
+labelText: {
+  fontSize: 15,
+  color: "#333",
+  fontWeight: "500",
+},
+bold: {
+  fontWeight: "bold",
+  color: "#000",
+},
   addButton: {
     backgroundColor: "#007AFF",
     paddingVertical: 12,
