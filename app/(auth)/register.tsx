@@ -1,13 +1,12 @@
-// src/screens/RegisterScreen.tsx
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import { AuthContext } from "../context/AuthContext";
-import { StackScreenProps } from "@react-navigation/stack";
+import { useRouter } from "expo-router";
+import { useAuth } from "../contexts/AuthContext";
 
-type Props = StackScreenProps<any>;
+export default function RegisterScreen() {
+  const router = useRouter();
+  const { register } = useAuth();
 
-export default function RegisterScreen({ navigation }: Props) {
-  const { register } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +17,7 @@ export default function RegisterScreen({ navigation }: Props) {
     setSubmitting(true);
     try {
       await register(username, email, password);
-      navigation.replace("Task");
+      router.replace("/(tabs)"); // ✅ go to your tab layout
     } catch (err: any) {
       console.error(err);
       Alert.alert("Register failed", err?.response?.data?.error || err.message || "Unknown error");
@@ -39,7 +38,7 @@ export default function RegisterScreen({ navigation }: Props) {
         <Text style={styles.buttonText}>{submitting ? "Registering..." : "Register"}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.link} onPress={() => navigation.navigate("Login")}>
+      <TouchableOpacity style={styles.link} onPress={() => router.push("/(auth)/login")}>
         <Text style={styles.linkText}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>

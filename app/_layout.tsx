@@ -1,15 +1,17 @@
-import { Stack } from 'expo-router';
-import { AuthProvider, useAuth } from './contexts/AuthContext'; // <- fixed path
+import { Stack } from "expo-router";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 function RootStack() {
   const { token } = useAuth();
 
   return (
-    <Stack>
-      {!token ? (
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      {token ? (
+        // ✅ If logged in -> go to tabs
+        <Stack.Screen name="(tabs)" />
       ) : (
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        // ❌ If not logged in -> show auth flow
+        <Stack.Screen name="(auth)" />
       )}
     </Stack>
   );

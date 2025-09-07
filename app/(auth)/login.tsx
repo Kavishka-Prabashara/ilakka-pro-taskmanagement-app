@@ -1,13 +1,12 @@
-// src/screens/LoginScreen.tsx
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
-import { AuthContext } from "../context/AuthContext";
-import { StackScreenProps } from "@react-navigation/stack";
+import { useRouter } from "expo-router";
+import { useAuth } from "../contexts/AuthContext";
 
-type Props = StackScreenProps<any>;
+export default function LoginScreen() {
+  const router = useRouter();
+  const { login } = useAuth();
 
-export default function LoginScreen({ navigation }: Props) {
-  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -17,8 +16,7 @@ export default function LoginScreen({ navigation }: Props) {
     setSubmitting(true);
     try {
       await login(email, password);
-      // redirect to main app (Task screen)
-      navigation.replace("Task"); // adjust route name
+      router.replace("/(tabs)"); // ✅ go to your tab layout
     } catch (err: any) {
       console.error(err);
       Alert.alert("Login failed", err?.response?.data?.error || err.message || "Unknown error");
@@ -31,14 +29,27 @@ export default function LoginScreen({ navigation }: Props) {
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
 
-      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
-      <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
 
       <TouchableOpacity style={styles.button} onPress={onLogin} disabled={submitting}>
         <Text style={styles.buttonText}>{submitting ? "Logging in..." : "Login"}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.link} onPress={() => navigation.navigate("Register")}>
+      <TouchableOpacity style={styles.link} onPress={() => router.push("/(auth)/register")}>
         <Text style={styles.linkText}>Don't have an account? Register</Text>
       </TouchableOpacity>
     </View>
