@@ -12,19 +12,21 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const onRegister = async () => {
-    if (!username || !email || !password) return Alert.alert("Fill all fields");
-    setSubmitting(true);
-    try {
-      await register(username, email, password);
-      router.replace("/(tabs)"); // ✅ go to your tab layout
-    } catch (err: any) {
-      console.error(err);
-      Alert.alert("Register failed", err?.response?.data?.error || err.message || "Unknown error");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+const onRegister = async () => {
+  if (!username || !email || !password) return Alert.alert("Fill all fields");
+  setSubmitting(true);
+  try {
+    await register(username, email, password);
+    Alert.alert("Success", "Account created! Please log in.");
+    router.replace("/(auth)/login"); // ✅ Go to login instead of tabs
+  } catch (err: any) {
+    console.error(err);
+    Alert.alert("Register failed", err?.response?.data?.error || err.message || "Unknown error");
+  } finally {
+    setSubmitting(false);
+  }
+};
+
 
   return (
     <View style={styles.container}>
